@@ -16,7 +16,7 @@
                             </label>    
 
                             <div class="col-md-6">
-                                <input id="post_title" type="input" class="form-control{{ $errors->has('post_title') ? ' is-invalid' : '' }}" name="post_title" value="{{ old('post_title') }}" required autofocus>
+                                <input id="post_title" type="input" class="form-control{{ $errors->has('post_title') ? ' is-invalid' : '' }}" name="post_title" value="{{ old('post_title') }}"  autofocus>
 
                                 @if ($errors->has('post_title'))
                                     <span class="invalid-feedback" role="alert">
@@ -30,7 +30,7 @@
                             <label for="post_description" class="col-md-4 col-form-label text-md-right">Add Description</label>
 
                             <div class="col-md-6">
-                                <textarea id="post_description" rows="7" class="form-control" name="post_description" value="{{ old('post_description') }}" required> 
+                                <textarea id="post_description" rows="7" class="form-control {{ $errors->has('post_description') ? ' is-invalid' : '' }}" name="post_description" value="{{ old('post_description') }}" > 
                                 </textarea>
 
                                 @if ($errors->has('post_description'))
@@ -45,7 +45,7 @@
                             <label for="post_image" class="col-md-4 col-form-label text-md-right">{{ __('Choose Photo_1') }}</label>
 
                             <div class="col-md-6">
-                                <input id="post_image" type="file" class="form-control{{ $errors->has('post_image') ? ' is-invalid' : '' }}" name="post_image" required>
+                                <input id="post_image" type="file" class="form-control{{ $errors->has('post_image') ? ' is-invalid' : '' }}" name="post_image" >
 
                                 @if ($errors->has('post_image'))
                                     <span class="invalid-feedback" role="alert">

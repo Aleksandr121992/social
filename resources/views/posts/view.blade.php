@@ -28,20 +28,20 @@
                 <div class="card-body">
 
                     <div class="col-md-8">
-                        @if(count($posts)>0)
-                            @foreach($posts->all() as $post)
-                                <h4>{{$post->post_title}}</h4>
-                                <img src='{{$post->post_image}}' class="img" alt="">
-                                <img src='{{$post->post_image_2}}' class="img" alt="">
-                                <img src='{{$post->post_image_3}}' class="img" alt="">
-                                <p>{{$post->post_description}}</p>
+                        @if($posts)
+                           
+                                <h4>{{$posts->post_title}}</h4>
+                                <img src='{{$posts->post_image}}' class="img" alt="">
+                                <img src='{{$posts->post_image_2}}' class="img" alt="">
+                                <img src='{{$posts->post_image_3}}' class="img" alt="">
+                                <p>{{$posts->post_description}}</p>
 
-                            @endforeach  
+                           
                         @else 
                             <p>No Post Availible</p>
                          @endif
                             <div class="col-md-12">
-                                 @if(count($comments)>0)
+                                 @if($posts->comments)
                                  <h3>Comments</h3>
                                         <table class="table">
                                             <tr>
@@ -50,8 +50,8 @@
                                                 <th></th>
                                             </tr>
                                         @if($user_perm == 1)
-                                             @foreach($comments->all() as $comment)
-                                             <tr>
+                                             @foreach($posts->comments as $comment)
+                                             <tr>    
                                                   <td><span style="color:blue">{{$comment->name}}</span></td>
                                                   <td id="comment_{{$comment->id}}">{{$comment->comment}}</td>
                                                       <td>
@@ -64,17 +64,19 @@
                                           @endforeach 
 
                                         @else
-                                          @foreach($comments->all() as $comment)
+                                          @foreach($posts->comments as $comment)
                                              <tr>
-                                                  <td><span style="color:blue">{{$comment->name}}</span></td>
+                                              
+                                                  <td><span style="color:blue">{{$comment->user->name}}</span></td>
                                                   <td id="comment_{{$comment->id}}">{{$comment->comment}}</td>
-                                                  @if($comment -> user_id == Auth::user()->id)
+                                             
+                                                  @if($comment->user->id == Auth::user()->id)
                                                       <td>
                                                           <a class="comment_edit" data-id="{{$comment->id}}" href="#">Edit</a>/
                                                           <a style="color:red" href='{{url("/deleteComment/{$comment->id}")}}'>Delete</a>
                                                       </td>                         
-                                                  @elseif($post -> user_id  == Auth::user()->id)
-                                                      <td><a style="color:red" href='{{url("/deleteComment/{$post->id}")}}'>Delete</a></td>
+                                                  @elseif($posts->user_id  == Auth::user()->id)
+                                                      <td><a style="color:red" href='{{url("/deleteComment/{$posts->id}")}}'>Delete</a></td>
                                                   @else
                                                   <td></td>
                                                       
@@ -87,7 +89,7 @@
                                     <p style="color:blue;">No Comment Availible</p>
                                  @endif
                             </div>
-                        <form method="POST" action= '{{url("/comment/{$post->id}")}}'>
+                        <form method="POST" action= '{{url("/comment/{$posts->id}")}}'>
                             @csrf
                             <div class="form-group">
                                     <textarea id="comment" rows="5" class="form-control" name="comment"  required> 
@@ -117,16 +119,19 @@
 
       <!-- Modal body -->
       <div class="modal-body">
-        <textarea id="edit_comment" style="width:400px" rows="5">
-           @if(count($comments)>0)
-              {{$comment->comment}}
-            @endif  
+        <div class="col-md-6">
+        <textarea id="edit_comment" style="width:400px" class="form-control" rows="5">
+          
         </textarea>
+          <span class="invalid-feedback " id="errorTxt"role="alert">
+             
+          </span>
+      </div>
       </div>
 
       <!-- Modal footer -->
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-id="id"  data-dismiss="modal" id="edit_comment_Changes">Edit</button>
+        <button type="button" class="btn btn-default" data-id="id"   id="edit_comment_Changes">Edit</button>
         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
       </div>
 

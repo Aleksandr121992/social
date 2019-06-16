@@ -1,0 +1,419 @@
+commit bed58afbebf262a4b17806436a72de707fd902cc
+tree d4ed89f8d2aa5463cbd33c9eeba1205be5fb212a
+parent 365857b6f4e22117c728043a9a59795a2f865dab
+author Aleksandr121992 <alik.muradyan92@gmail.com> 1558785358 +0400
+committer Aleksandr121992 <alik.muradyan92@gmail.com> 1558785358 +0400
+
+    new
+
+diff --git a/app/Http/Requests/CommentRequest.php b/app/Http/Requests/CommentRequest.php
+new file mode 100644
+index 0000000..baf58b7
+--- /dev/null
++++ b/app/Http/Requests/CommentRequest.php
+@@ -0,0 +1,33 @@
++<?php
++
++namespace App\Http\Requests;
++
++use Illuminate\Foundation\Http\FormRequest;
++
++class CommentRequest extends FormRequest
++{
++    /**
++     * Determine if the user is authorized to make this request.
++     *
++     * @return bool
++     */
++    public function authorize()
++    {
++        return true;
++    }
++
++    /**
++     * Get the validation rules that apply to the request.
++     *
++     * @return array
++     */
++    public function rules()
++    {
++         $rules = [
++            'comment' => 'required',
++           
++                
++        ];
++        return $rules;
++    }
++}
+diff --git a/app/Http/Requests/EditRequest.php b/app/Http/Requests/EditRequest.php
+new file mode 100644
+index 0000000..96b7d8f
+--- /dev/null
++++ b/app/Http/Requests/EditRequest.php
+@@ -0,0 +1,34 @@
++<?php
++
++namespace App\Http\Requests;
++
++use Illuminate\Foundation\Http\FormRequest;
++
++class EditRequest extends FormRequest
++{
++    /**
++     * Determine if the user is authorized to make this request.
++     *
++     * @return bool
++     */
++    public function authorize()
++    {
++        return true;
++    }
++
++    /**
++     * Get the validation rules that apply to the request.
++     *
++     * @return array
++     */
++    public function rules()
++    {
++
++        $rules = [
++            'post_title' => 'required',
++            'post_description' => 'required',
++                
++        ];
++        return $rules;
++    }
++}
+diff --git a/app/Http/Requests/PostRequest.php b/app/Http/Requests/PostRequest.php
+new file mode 100644
+index 0000000..e3157d8
+--- /dev/null
++++ b/app/Http/Requests/PostRequest.php
+@@ -0,0 +1,37 @@
++<?php
++
++namespace App\Http\Requests;
++
++use Illuminate\Foundation\Http\FormRequest;
++
++class PostRequest extends FormRequest
++{
++    /**
++     * Determine if the user is authorized to make this request.
++     *
++     * @return bool
++     */
++    public function authorize()
++    {
++        return true;
++    }
++
++    /**
++     * Get the validation rules that apply to the request.
++     *
++     * @return array
++     */
++    public function rules()
++    {
++      
++         $rules = [
++            'post_title' => 'required',
++            'post_description' => 'required',
++            'post_image' => 'required',
++           
++            
++        ];
++      
++        return $rules;
++    }
++}
+diff --git a/database/migrations/2019_03_03_152022_create_public_table.php b/database/migrations/2019_03_03_152022_create_public_table.php
+new file mode 100644
+index 0000000..95cbdb9
+--- /dev/null
++++ b/database/migrations/2019_03_03_152022_create_public_table.php
+@@ -0,0 +1,31 @@
++<?php
++
++use Illuminate\Support\Facades\Schema;
++use Illuminate\Database\Schema\Blueprint;
++use Illuminate\Database\Migrations\Migration;
++
++class CreatePublicTable extends Migration
++{
++    /**
++     * Run the migrations.
++     *
++     * @return void
++     */
++    public function up()
++    {
++        Schema::create('public', function (Blueprint $table) {
++            $table->bigIncrements('id');
++            $table->timestamps();
++        });
++    }
++
++    /**
++     * Reverse the migrations.
++     *
++     * @return void
++     */
++    public function down()
++    {
++        Schema::dropIfExists('public');
++    }
++}
+diff --git a/database/migrations/2019_03_09_145042_create_publics_table.php b/database/migrations/2019_03_09_145042_create_publics_table.php
+new file mode 100644
+index 0000000..fae613b
+--- /dev/null
++++ b/database/migrations/2019_03_09_145042_create_publics_table.php
+@@ -0,0 +1,31 @@
++<?php
++
++use Illuminate\Support\Facades\Schema;
++use Illuminate\Database\Schema\Blueprint;
++use Illuminate\Database\Migrations\Migration;
++
++class CreatePublicsTable extends Migration
++{
++    /**
++     * Run the migrations.
++     *
++     * @return void
++     */
++    public function up()
++    {
++        Schema::create('publics', function (Blueprint $table) {
++            $table->bigIncrements('id');
++            $table->timestamps();
++        });
++    }
++
++    /**
++     * Reverse the migrations.
++     *
++     * @return void
++     */
++    public function down()
++    {
++        Schema::dropIfExists('publics');
++    }
++}
+diff --git a/database/migrations/2019_04_04_115904_create_posts_table.php b/database/migrations/2019_04_04_115904_create_posts_table.php
+new file mode 100644
+index 0000000..7e7ef6a
+--- /dev/null
++++ b/database/migrations/2019_04_04_115904_create_posts_table.php
+@@ -0,0 +1,31 @@
++<?php
++
++use Illuminate\Support\Facades\Schema;
++use Illuminate\Database\Schema\Blueprint;
++use Illuminate\Database\Migrations\Migration;
++
++class CreatePostsTable extends Migration
++{
++    /**
++     * Run the migrations.
++     *
++     * @return void
++     */
++    public function up()
++    {
++        Schema::create('posts', function (Blueprint $table) {
++            $table->bigIncrements('id');
++            $table->timestamps();
++        });
++    }
++
++    /**
++     * Reverse the migrations.
++     *
++     * @return void
++     */
++    public function down()
++    {
++        Schema::dropIfExists('posts');
++    }
++}
+diff --git a/database/migrations/2019_04_13_134956_add_permition_to_users_table.php b/database/migrations/2019_04_13_134956_add_permition_to_users_table.php
+new file mode 100644
+index 0000000..4cf8d3a
+--- /dev/null
++++ b/database/migrations/2019_04_13_134956_add_permition_to_users_table.php
+@@ -0,0 +1,32 @@
++<?php
++
++use Illuminate\Support\Facades\Schema;
++use Illuminate\Database\Schema\Blueprint;
++use Illuminate\Database\Migrations\Migration;
++
++class AddPermitionToUsersTable extends Migration
++{
++    /**
++     * Run the migrations.
++     *
++     * @return void
++     */
++    public function up()
++    {
++        Schema::table('users', function (Blueprint $table) {
++            //
++        });
++    }
++
++    /**
++     * Reverse the migrations.
++     *
++     * @return void
++     */
++    public function down()
++    {
++        Schema::table('users', function (Blueprint $table) {
++            //
++        });
++    }
++}
+diff --git a/database/migrations/2019_04_15_130140_add_post_image_2_to_posts_table.php b/database/migrations/2019_04_15_130140_add_post_image_2_to_posts_table.php
+new file mode 100644
+index 0000000..ba79c05
+--- /dev/null
++++ b/database/migrations/2019_04_15_130140_add_post_image_2_to_posts_table.php
+@@ -0,0 +1,32 @@
++<?php
++
++use Illuminate\Support\Facades\Schema;
++use Illuminate\Database\Schema\Blueprint;
++use Illuminate\Database\Migrations\Migration;
++
++class AddPostImage2ToPostsTable extends Migration
++{
++    /**
++     * Run the migrations.
++     *
++     * @return void
++     */
++    public function up()
++    {
++        Schema::table('posts', function (Blueprint $table) {
++            //
++        });
++    }
++
++    /**
++     * Reverse the migrations.
++     *
++     * @return void
++     */
++    public function down()
++    {
++        Schema::table('posts', function (Blueprint $table) {
++            //
++        });
++    }
++}
+diff --git a/database/migrations/2019_05_21_203648_add_profile_image_to_users_table.php b/database/migrations/2019_05_21_203648_add_profile_image_to_users_table.php
+new file mode 100644
+index 0000000..68cb927
+--- /dev/null
++++ b/database/migrations/2019_05_21_203648_add_profile_image_to_users_table.php
+@@ -0,0 +1,32 @@
++<?php
++
++use Illuminate\Support\Facades\Schema;
++use Illuminate\Database\Schema\Blueprint;
++use Illuminate\Database\Migrations\Migration;
++
++class AddProfileImageToUsersTable extends Migration
++{
++    /**
++     * Run the migrations.
++     *
++     * @return void
++     */
++    public function up()
++    {
++        Schema::table('users', function (Blueprint $table) {
++            $table->string('profile_image')->after('password')->nullable();
++        });
++    }
++
++    /**
++     * Reverse the migrations.
++     *
++     * @return void
++     */
++    public function down()
++    {
++        Schema::table('users', function (Blueprint $table) {
++            $table->dropColumn('profile_image');
++        });
++    }
++}
+diff --git a/public/posts/4.png b/public/posts/4.png
+new file mode 100644
+index 0000000..d56cd08
+Binary files /dev/null and b/public/posts/4.png differ
+diff --git a/public/posts/8.png b/public/posts/8.png
+new file mode 100644
+index 0000000..61290a1
+Binary files /dev/null and b/public/posts/8.png differ
+diff --git a/public/posts/FD_image.jpg b/public/posts/FD_image.jpg
+new file mode 100644
+index 0000000..67a450b
+Binary files /dev/null and b/public/posts/FD_image.jpg differ
+diff --git a/public/uploads/2_profile_image1558557960.jpeg b/public/uploads/2_profile_image1558557960.jpeg
+new file mode 100644
+index 0000000..1f4a8fc
+Binary files /dev/null and b/public/uploads/2_profile_image1558557960.jpeg differ
+diff --git a/public/uploads/3_profile_image1558478271.png b/public/uploads/3_profile_image1558478271.png
+new file mode 100644
+index 0000000..cdd959b
+Binary files /dev/null and b/public/uploads/3_profile_image1558478271.png differ
+diff --git a/public/uploads/3_profile_image1558478383.jpg b/public/uploads/3_profile_image1558478383.jpg
+new file mode 100644
+index 0000000..520ff5d
+Binary files /dev/null and b/public/uploads/3_profile_image1558478383.jpg differ
+diff --git a/public/uploads/3_profile_image1558516950.jpg b/public/uploads/3_profile_image1558516950.jpg
+new file mode 100644
+index 0000000..520ff5d
+Binary files /dev/null and b/public/uploads/3_profile_image1558516950.jpg differ
+diff --git a/public/uploads/3_profile_image1558518353.jpg b/public/uploads/3_profile_image1558518353.jpg
+new file mode 100644
+index 0000000..520ff5d
+Binary files /dev/null and b/public/uploads/3_profile_image1558518353.jpg differ
+diff --git a/public/uploads/3_profile_image1558557195.jpg b/public/uploads/3_profile_image1558557195.jpg
+new file mode 100644
+index 0000000..520ff5d
+Binary files /dev/null and b/public/uploads/3_profile_image1558557195.jpg differ
+diff --git a/public/uploads/jpeg b/public/uploads/jpeg
+new file mode 100644
+index 0000000..1f4a8fc
+Binary files /dev/null and b/public/uploads/jpeg differ
+diff --git a/public/uploads/thumb-audio.jpg b/public/uploads/thumb-audio.jpg
+new file mode 100644
+index 0000000..520ff5d
+Binary files /dev/null and b/public/uploads/thumb-audio.jpg differ
+diff --git a/resources/views/index.blade.php b/resources/views/index.blade.php
+new file mode 100644
+index 0000000..58696d6
+--- /dev/null
++++ b/resources/views/index.blade.php
+@@ -0,0 +1,14 @@
++@extends('layouts.app')
++@section('content')
++<div class="row">
++          <div class="col-md-2 col-sm-6 portfolio-item" style="border:2px solid #675F5F">
++            aaaaa
++          </div>
++          <div class="col-md-7 col-sm-6 portfolio-item" style="border:2px solid #675F5F">
++            bbbb
++          </div>
++          <div class="col-md-3 col-sm-6 portfolio-item" style="border:2px solid #675F5F">
++            ccc
++          </div>
++</div>          
++@endsection

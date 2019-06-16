@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Auth;
 use App\user;
-use App\Profile;
 use App\Post;
 use App\Comment;
 
@@ -31,14 +29,9 @@ class StaticController extends Controller
     {   
         $user_perm = Auth::user()->permition;
         $user_id = Auth::user()->id;
-        $profile = DB::table('users')
-                    ->join('profiles','users.id','=',
-                        'profiles.user_id')
-                    ->select('users.*','profiles.*')
-                    ->where(['profiles.user_id' => $user_id])
-                    ->first();   
+        $users =  Auth::user()->id;  
         $posts = Post::all();    
         $users = User::all();             
-        return view('blog',['profile' => $profile , 'posts' => $posts,'user_perm' => $user_perm,'users' => $users]);
+        return view('blog',[ 'posts' => $posts,'user_perm' => $user_perm,'users' => $users]);
     }
 }

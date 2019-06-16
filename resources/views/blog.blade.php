@@ -31,19 +31,29 @@
     <div class="row justify-content-center">
 @if($user_perm == 2)
      <div class="col-md-3">
-      
+        @if(Auth::user()->profile_image != null)
+            <img src="{{url('uploads')}}/{{Auth::user()->profile_image}}" class="avatar" alt=""> 
+             <br> 
+           <h2 style="margin-left: 25px">{{ Auth::user()->name }} </h2> 
+        @else   
+            <img src="{{ url('images/avatar.png')}}" class="avatar" alt="">
+             <br> 
+           <h2 style="margin-left: 25px">{{ Auth::user()->name }} </h2> 
 
-                        @if(!empty($profile))
-                            <img src="{{ $profile->profile_image}}" class="avatar" alt="">
-                        @else   
-                            <img src="{{ url('images/avatar.png')}}" class="avatar" alt="">
-                        @endif     
-                        
-                        @if(!empty($profile))
-                            <h2>{{$profile->name}}</h2>
-                        @else   
-                            <p></p>
-                        @endif         
+                <form action="/profile" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="form-group">
+                    <input type="file" class="form-control-file" name="profile_image" id="profile_image" aria-describedby="fileHelp">
+                    <small id="fileHelp" class="form-text text-muted">Please upload a valid image file. Size of image should not be more than 2MB.</small>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+
+
+        @endif    
+
+         
+
                     </div> 
 @else
      

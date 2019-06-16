@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\PostRequest;
+use App\Http\Requests\EditRequest;
+use App\Http\Requests\CommentRequest;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\DB;
 use App\Post;
 use Auth;
 use App\Comment;
-use app\user;
+use app\User;
 
 class PostController extends Controller
 {
@@ -18,14 +20,35 @@ class PostController extends Controller
     	return view('posts/post');	
     }
 
-    public function addPost(Request $request){
-    	$this->validate($request,[
-    		'post_title' => 'required',
-    		'post_description' => 'required',
-    		'post_image' => 'required',
-            'post_image_2' => 'required',
-            'post_image_3' => 'required',
-    	]);		
+    public function addProfileImage(Request $request){
+
+        $request->validate([
+            'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $user = Auth::user();
+
+        $profile_imageName = $user->id.'_profile_image'.time().'.'.request()->profile_image->getClientOriginalExtension();
+
+        $request->profile_image->move(public_path().'/uploads',$profile_imageName);
+
+        $user->profile_image = $profile_imageName;
+        $user->save();
+
+        return back()
+            ->with('success','You have successfully upload image.');
+
+    }
+
+
+    public function addPost(PostRequest $request){
+    	// $this->validate($request,[
+    	// 	'post_title' => 'required',
+    	// 	'post_description' => 'required',
+    	// 	'post_image' => 'required',
+     //        'post_image_2' => 'required',
+     //        'post_image_3' => 'required',
+    	// ]);		
     	$posts = new Post;
         $posts->post_title = $request->input('post_title');
         $posts->post_description = $request->input('post_description');
@@ -61,15 +84,11 @@ class PostController extends Controller
 
     public function view($post_id){
          $user_perm = Auth::user()->permition;
-         $users = User::all(); 
-    	 $posts = Post::where('id','=',$post_id)->get();
-    	 $comments = DB::table('users')
-                    ->join('comments','users.id','=','comments.user_id') 
-                    ->join('posts','comments.post_id','=','posts.id')  
-                    ->select('users.name','comments.*')
-                    ->where(['posts.id' => $post_id])
-                    ->get();         
-    	 return view('/posts/view',['posts' => $posts,'comments' => $comments,'user_perm' => $user_perm]);
+         // $users = User::all(); 
+    	 $posts = Post::where('id','=',$post_id)->with('comments.user')->first();
+         // dd($posts);
+    	 // $comments =  Comment::all();      
+    	 return view('/posts/view',['posts' => $posts,'user_perm' => $user_perm]);
     }
 
     public function edit($post_id){
@@ -77,14 +96,14 @@ class PostController extends Controller
     	return view('/posts/edit',['posts' => $posts]);
     }
 
-    public function editPost(Request $request,$post_id){
+    public function editPost(EditRequest $request,$post_id){
     	
-    	$this->validate($request,[
-    		'post_title' => 'required',
-    		'post_description' => 'required',
+    	// $this->validate($request,[
+    	// 	'post_title' => 'required',
+    	// 	'post_description' => 'required',
     		
             
-    	]);		
+    	// ]);		
        
     	$posts = new Post;
         $posts->post_title = $request->input('post_title');
@@ -144,10 +163,10 @@ class PostController extends Controller
     	with('response','Post Deleted Succesfully');
     }
 
-    public function comment(Request $request,$post_id){
-		$this->validate($request,[
-    		'comment' => 'required',
-    	]);	
+    public function comment(CommentRequest $request,$post_id){
+		// $this->validate($request,[
+  //   		'comment' => 'required',
+  //   	]);	
     	$comment = new Comment;	
     	$comment ->user_id = Auth::user()->id;
     	$comment ->post_id = $post_id;
@@ -157,7 +176,7 @@ class PostController extends Controller
     	with('response','Comment Added Succesfully');
     }	
 
-    public function editComment(Request $request)
+    public function editComment(CommentRequest $request)
         {
         	// dd($id);
         	$data = $request->all();
