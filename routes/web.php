@@ -17,7 +17,7 @@ Auth::routes();
 
 Route::get('/', 'StaticController@index');
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/post', 'PostController@post');
+Route::get('/create-post', 'PostController@createPost');
 Route::post('/addPost', 'PostController@addPost');
 Route::get('/view/{id}', 'PostController@view');
 Route::get('/edit/{id}', 'PostController@edit');
@@ -27,3 +27,4 @@ Route::post('/comment/{id}', 'PostController@comment');
 Route::post('/comment-edit', 'PostController@editComment');
 Route::get('/deleteComment/{id}', 'PostController@deleteComment');
 Route::post('/profile', 'PostController@addProfileImage');
+

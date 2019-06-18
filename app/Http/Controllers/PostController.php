@@ -16,12 +16,13 @@ use app\User;
 
 class PostController extends Controller
 {
-    public function post(){
+    public function createPost()
+    {
     	return view('posts/post');	
     }
 
-    public function addProfileImage(Request $request){
-
+    public function addProfileImage(Request $request)
+    {
         $request->validate([
             'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -42,22 +43,16 @@ class PostController extends Controller
 
 
     public function addPost(PostRequest $request){
-    	// $this->validate($request,[
-    	// 	'post_title' => 'required',
-    	// 	'post_description' => 'required',
-    	// 	'post_image' => 'required',
-     //        'post_image_2' => 'required',
-     //        'post_image_3' => 'required',
-    	// ]);		
+    
     	$posts = new Post;
         $posts->post_title = $request->input('post_title');
         $posts->post_description = $request->input('post_description');
-    	$posts->user_id = Auth::user()->id;
-    	if(Input::hasFile('post_image')){
+        $posts->user_id = Auth::user()->id;
+        if(Input::hasFile('post_image')){
            $file = Input::file('post_image');
            $file -> move(public_path().'/posts/', $file->
            getClientOriginalName());
-		   $url = URL::to("/") . '/posts/' . $file-> getClientOriginalName();
+           $url = URL::to("/") . '/posts/' . $file-> getClientOriginalName();
 
         }
 
@@ -74,46 +69,42 @@ class PostController extends Controller
            getClientOriginalName());
            $url_3 = URL::to("/") . '/posts/' . $file_3-> getClientOriginalName();
         }
-    	$posts->post_image = $url;
-        $posts->post_image_2 = $url_2;	
-        $posts->post_image_3 = $url_3;  
-    	$posts->save();
+        $posts->post_image = $url;
+        
+        $posts->save();
       return redirect('/home')->
-    	with('response','Post Added Succesfully');
+        with('response','Post Added Succesfully');
     }
 
     public function view($post_id){
          $user_perm = Auth::user()->permition;
-         // $users = User::all(); 
-    	 $posts = Post::where('id','=',$post_id)->with('comments.user')->first();
-         // dd($posts);
-    	 // $comments =  Comment::all();      
+    	 $posts = Post::where('id','=',$post_id)->with('comments.user')->first();   
     	 return view('/posts/view',['posts' => $posts,'user_perm' => $user_perm]);
     }
 
     public function edit($post_id){
-    	$posts = Post::find($post_id);
-    	return view('/posts/edit',['posts' => $posts]);
+        $user_id = Auth::id();
+    	$post = Post::where('id',$post_id)->where('user_id',$user_id)->first();
+         if ($post){
+        	return view('/posts/edit',['post' => $post]);
+        }else{
+            return abort(404);
+        }
     }
 
     public function editPost(EditRequest $request,$post_id){
     	
-    	// $this->validate($request,[
-    	// 	'post_title' => 'required',
-    	// 	'post_description' => 'required',
-    		
-            
-    	// ]);		
-       
-    	$posts = new Post;
-        $posts->post_title = $request->input('post_title');
-        $posts->post_description = $request->input('post_description');
-    	$posts->user_id = Auth::user()->id;
-    	if(Input::hasFile('post_image')){
+    
+        $user_id = Auth::id();
+        $dataRequest =$request->all();
+        $post = Post::where('id',$post_id)->where('user_id',$user_id)->first();
+        
+         if ($post){
+             if(Input::hasFile('post_image')){
            $file = Input::file('post_image');
            $file -> move(public_path().'/posts/', $file->
            getClientOriginalName());
-		   $url = URL::to("/") . '/posts/' . $file-> getClientOriginalName();
+           $url = URL::to("/") . '/posts/' . $file-> getClientOriginalName();
         } else{
            $url =""; 
          }
@@ -138,22 +129,26 @@ class PostController extends Controller
          else{
            $url_3 =""; 
          }
-    	$posts->post_image = $url;	
-        $posts->post_image_2 = $url_2;  
-        $posts->post_image_3 = $url_3;  
-    	$data = array(
-    		'user_id' => $posts->user_id,
-    		'post_title' => $posts->post_title,
-    		'post_description' => $posts->post_description,
-    		'post_image' => $posts->post_image,
-            'post_image_2' => $posts->post_image_2,
-            'post_image_3' => $posts->post_image_3
-    	);
-    	Post::where('id',$post_id)
-    	->update($data);
-    	$posts->update();
+         
+        $data = array(
+        
+            'post_title' => $dataRequest['post_title'],
+            'post_description' =>$dataRequest['post_description'] ,
+            // 'post_image' => $post->post_image,
+            // 'post_image_2' => $post->post_image_2,
+            // 'post_image_3' => $post->post_image_3
+        );
+        // dd($data);
+        Post::where('id',$post_id)
+        ->update($data);  
       return redirect('/home')->
-    	with('response','Post Edited Succesfully');
+        with('response','Post Edited Succesfully');
+           
+        }else{
+            return abort(404);
+        }
+    	
+       
     }
 
     public function deletePost($post_id){
@@ -178,9 +173,7 @@ class PostController extends Controller
 
     public function editComment(CommentRequest $request)
         {
-        	// dd($id);
         	$data = $request->all();
-        	// dd($data);
         	unset($data['_token']);
         	Comment::where('id',$data['id'])->update($data);
         }	

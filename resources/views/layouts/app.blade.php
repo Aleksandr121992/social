@@ -51,7 +51,7 @@
                         @else
                         <li> <a class="nav-link" href="{{ url('/home') }}">Home</a>
                         </li>
-                        <li> <a class="nav-link" href="{{ url('/post') }}">Add Post</a>
+                        <li> <a class="nav-link" href="{{ url('/create-post') }}">Add Post</a>
                         </li>
                      @endguest 
                     

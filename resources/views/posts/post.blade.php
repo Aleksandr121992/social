@@ -40,38 +40,16 @@
                                 @endif
                             </div>
                         </div>
-
                         <div class="form-group row">
-                            <label for="post_image" class="col-md-4 col-form-label text-md-right">{{ __('Choose Photo_1') }}</label>
+                            <label for="file" class="col-md-4 col-form-label text-md-right">Choose Image(s)</label>
 
                             <div class="col-md-6">
-                                <input id="post_image" type="file" class="form-control{{ $errors->has('post_image') ? ' is-invalid' : '' }}" name="post_image" >
-
-                                @if ($errors->has('post_image'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('post_image') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
+                                   <input type="file" name="filename[]" class="form-control">
+                             
                         </div>
-
-                         <div class="form-group row">
-                            <label for="post_image_2" class="col-md-4 col-form-label text-md-right">{{ __('Choose Photo_2') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="post_image_2" type="file" class="form-control" name="post_image_2" >
-                            </div>
                         </div>
-
-                        <div class="form-group row">
-                            <label for="post_image_3" class="col-md-4 col-form-label text-md-right">{{ __('Choose Photo_3') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="post_image_3" type="file" class="form-control" name="post_image_3" >
-                            </div>
-                        </div>
-
-                       
+                        <br>
+                  
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
