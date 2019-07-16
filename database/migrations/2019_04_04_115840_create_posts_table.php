@@ -14,10 +14,11 @@ class CreatePostsTable extends Migration
     public function up()
     {
         Schema::create('posts', function (Blueprint $table) {
+           // $table->engine = 'InnoDB';
+
             $table->bigIncrements('id');
             $table->integer('user_id');
             $table->string('post_title');
-            $table->string('post_image');
             $table->text('post_description');
             $table->timestamps();
         });

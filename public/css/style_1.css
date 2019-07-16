@@ -1,0 +1,43 @@
+.avatar{
+            border-radius:100%;
+            width:150px; 
+            height:150px; 
+        }
+
+        .img{
+           max-width:80%;  
+           height: 180px;
+        }
+
+        
+
+        .img_adm{
+            max-width:120px;
+        }
+
+        .col-md-8{
+           margin:20px auto; 
+        }
+
+        .li{
+          margin:0 5px;  
+        }
+
+       .admin{
+        width:70px;
+       }
+
+
+        .deleteIcon{
+            width:25px; 
+            height:20px; 
+            margin:0;
+        }
+
+         .path{
+            width:80%; 
+            margin:0;
+     
+
+        }
+

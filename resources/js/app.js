@@ -1,4 +1,14 @@
+import EchoLibrary from "laravel-echo"
 
+window.Echo = new EchoLibrary({
+    broadcaster: 'pusher',
+    key: 'здесь-ваш-ключ-pusher'
+});
+
+Echo.channel('chat-room.1')
+    .listen('ChatMessageWasReceived', (e) => {
+        console.log(e.user, e.comment,e.post,);
+    });
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when

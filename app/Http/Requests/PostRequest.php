@@ -27,8 +27,7 @@ class PostRequest extends FormRequest
          $rules = [
             'post_title' => 'required',
             'post_description' => 'required',
-            'post_image' => 'required',
-           
+            'filename.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             
         ];
       

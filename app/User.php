@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Auth;
 
 class User extends Authenticatable
 {
@@ -18,6 +19,20 @@ class User extends Authenticatable
   public function posts()
     {
         return $this->hasMany('App\Post', 'user_id');
+    } 
+
+   public function post_likes_dislikes()
+    {
+        return $this->hasMany('App\Post_like_dislike', 'user_id');
+    }  
+
+    public function friends()
+    {
+        return $this->belongsToMany('App\User', 'followers', 'user_id', 'follower_id')->withPivot(['accepted']);
+    }    
+      public function sendedRequest()
+    {
+        return $this->belongsToMany('App\User', 'followers', 'follower_id', 'user_id')->wherePivot('accepted',0)->withPivot(['accepted']);
     }   
     /**
      * The attributes that are mass assignable.
@@ -45,4 +60,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
 }
