@@ -9,8 +9,9 @@ use App\Http\Requests\CommentRequest;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\URL;
-
+use DB;
 use App\Post;
+use Carbon\Carbon;
 use Auth;
 use App\Comment;
 use App\Follower;
@@ -75,6 +76,8 @@ class PostController extends Controller
     }
 
     public function view($post_id,Request $request){
+        $date = Carbon::now();
+        // dd($date->format('Y-m-d H:i'));
         $authId =Auth::id();
         $comments=new Comment;
         // $comments = $comments->orderBy("id","desc")->with(['likes','dislikes'])->get();
@@ -319,6 +322,57 @@ class PostController extends Controller
        User::find($id)->friends()->detach($authId);
 
     }    
+
+    public function action(Request $request)
+    {
+     
+      $authId =Auth::id();
+      $data = new Post;  
+      $output = '';
+      $query = $request->get('query');
+      if($query != '')
+      {
+      $data = DB::table('posts')
+         ->where('post_title', 'like', '%'.$query.'%')
+         ->orderBy('id', 'desc')
+         ->get();
+        
+         
+      }
+      else
+      {
+       $data = $data->orderBy("id","desc")->get();
+      }
+      $total_row = $data->count();
+      if($total_row > 0)
+      {
+       foreach($data as $post)
+       {
+        $output .= '
+        <tr>
+         <td>'.$post->user->name.'</td>
+         <td>'.$post->post_title.'</td>
+         <td>'.$post->post_description.'</td>
+        </tr>
+        ';
+       }
+      }
+      else
+      {
+       $output = '
+       <tr>
+        <td align="center" colspan="5">No Data Found</td>
+       </tr>
+       ';
+      }
+      $data = array(
+       'table_data'  => $output,
+       'total_data'  => $total_row
+      );
+
+      echo json_encode($data);
+     
+    }
 
     
 }

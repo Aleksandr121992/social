@@ -37,7 +37,6 @@ Route::get('/addFriend/{id}', 'PostController@sendFrienqRequest');
 Route::get('/undoRequest/{id}', 'PostController@undoRequest');
 Route::get('/deleteFriend/{id}', 'PostController@deleteFriend');
 Route::get('/acceptFriend/{id}', 'PostController@acceptRequest');
-
-   
+Route::get('/liveSearch/action', 'PostController@action');   
 
 

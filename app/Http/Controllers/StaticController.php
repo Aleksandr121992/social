@@ -35,7 +35,8 @@ class StaticController extends Controller
         $posts = new Post;     
 
         if(Request::input("search")){
-            $posts = $posts->where("post_title", 'LIKE', "%".Request::input("search")."%");
+            $posts = $posts->where("post_title", 'LIKE', "%".Request::input("search")."%")
+                            ->where('user_id','=', $authId );
         }
         $posts = $posts->orderBy("id","desc")->with(['likes','dislikes','user'])->get();
         // dd($posts);
@@ -105,4 +106,7 @@ class StaticController extends Controller
     
       
     }
+
+ 
+
 }

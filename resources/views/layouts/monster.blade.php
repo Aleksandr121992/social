@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="_token" content="{{ csrf_token() }}">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
     <title>Monster Admin Template - The Most Complete & Trusted Bootstrap 4 Admin Template</title>
@@ -43,7 +44,9 @@
      <link href="/css/image.css" rel="stylesheet">
     <script src="/js/jquery.min.js"></script>
 
-     
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -125,6 +128,7 @@
                                     <span class="heartbit"></span> <span class="point">
                                 @endif        
                                     </span> </div>
+
                             </a>
                             <div class="dropdown-menu mailbox animated bounceInDown">
                                 <ul>
@@ -324,13 +328,14 @@
                     <ul class="navbar-nav my-lg-0">
                         <li class="nav-item hidden-sm-down">
                             <form action="/" method="get" class="app-search">
-                                <input type="text" class="form-control" name="search"   placeholder="Search for..."> 
+                                <input type="text" class="form-control" name="search1"   placeholder="Search for..."> 
                                 <!-- <a class="srh-btn"><i  class="ti-search"></i></a> -->
 
                                 <button type="submit" class="btn btn-default" style="background-color: Transparent;">
                                     <span class="ti-search"></span>
                                 </button>
                             </form>
+
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

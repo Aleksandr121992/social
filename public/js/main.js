@@ -370,6 +370,33 @@ $( document ).ready(function() {
 
 
 
+
+ fetch_customer_data();
+
+ function fetch_customer_data(query = '')
+ {
+   console.log(111) 
+  $.ajax({
+   url:"/liveSearch/action",
+   method:'GET',
+   data:{query:query},
+   dataType:'json',
+   success:function(data)
+   {
+    $('tbody').html(data.table_data);
+    $('#total_records').text(data.total_data);
+   }
+ 
+  })
+ }
+
+ $(document).on('keyup', '#search', function(){
+console.log(222)
+  var query = $(this).val();
+  fetch_customer_data(query);
+
+ });
+
 });
 
 
